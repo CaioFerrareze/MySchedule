@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import EventModal from '../EventModal/EventModal'; 
-import Icon from '../../assets/iconUser.png'
+import Icon from '../../assets/iconUser.png';
+import Modal from '../EventModal/Modal';
 
 const Header: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isIotAssetsModalOpen, setIsIotAssetsModalOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const openSettingsModal = () => {
+    setIsSettingsModalOpen(true);
+    setIsDropdownOpen(false);
+  };
+
+  const openIotAssetsModal = () => {
+    setIsIotAssetsModalOpen(true);
+    setIsDropdownOpen(false);
   };
 
   const handleSaveEvent = (title: string) => {
@@ -20,29 +31,59 @@ const Header: React.FC = () => {
       <Logo>MySchedule</Logo>
       <Menu>
         <User>
-          <UserImg src={Icon}  />
+          <UserImg src={Icon} />
           <UserName>Chris Evans</UserName>
         </User>
         <MenuIcon onClick={toggleDropdown}>☰</MenuIcon>
         {isDropdownOpen && (
           <DropdownMenu>
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownItem>IoT Assets</DropdownItem>
+            <DropdownItem onClick={openSettingsModal}>Settings</DropdownItem>
+            <DropdownItem onClick={openIotAssetsModal}>IoT Assets</DropdownItem>
             <DropdownItem>Logout</DropdownItem>
           </DropdownMenu>
         )}
       </Menu>
-      <EventModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+
+      {/* Modal para Settings */}
+      <Modal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
         onSave={handleSaveEvent}
-      />
+      >
+        <ModalContent>  
+          <h3>User Preferences</h3>
+          <hr />
+          <ul>
+            <li><b>Name:</b> Chris Evans</li>
+            <li><b>Email:</b> someRandom@email.com</li>
+            <li><b>Phone:</b> (19)99811-3141 </li>
+            <li><b>Address:</b> R: Random Place Nº 150</li>
+          </ul>
+          
+        </ModalContent>
+      </Modal>
+
+      {/* Modal para IoT Assets */}
+      <Modal
+        isOpen={isIotAssetsModalOpen}
+        onClose={() => setIsIotAssetsModalOpen(false)}
+        onSave={handleSaveEvent}
+      >
+        <ModalContent>
+          <h3>IoT Settings</h3>
+          <hr />
+          <ul>
+            <li><b>Asset 1:</b> Iphone 15 pro max</li>
+            <li><b>Asset 2:</b> Audi A5 - CarPlay</li>
+            <li><b>Asset 3:</b> Apple Watch</li>
+          </ul>
+        </ModalContent>
+      </Modal>
     </HeaderContainer>
   );
 };
 
 export default Header;
-
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -50,25 +91,28 @@ const HeaderContainer = styled.header`
   align-items: center;
   padding: 15px 20px;
   color: #272727;
-  margin: 0 3rem;
+  margin: 0 15rem;
 `;
+
 const User = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`
+`;
+
 const UserName = styled.div`
   font-weight: 700;
-`
+`;
+
 const UserImg = styled.img`
-width: 1.7rem;
-fill: black;
-border: 2.5px solid;
-border-radius: 10rem;
-`
+  width: 1.7rem;
+  fill: black;
+  border: 2.5px solid;
+  border-radius: 10rem;
+`;
 
 const Logo = styled.div`
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: bold;
 `;
 
@@ -78,6 +122,10 @@ const Menu = styled.div`
   gap: 50px;
   align-items: center;
   justify-content: space-between;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 10px;
+  cursor: pointer;
 `;
 
 const MenuIcon = styled.div`
@@ -108,4 +156,10 @@ const DropdownItem = styled.div`
     background-color: #006BFF;
     color: white;
   }
+`;
+
+const ModalContent = styled.div`
+  padding: 20px;
+  font-size: 1em;
+  color: #333;
 `;

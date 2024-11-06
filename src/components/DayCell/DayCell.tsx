@@ -45,7 +45,7 @@ export default DayCell;
 
 const Buttons = styled.div`
 display: flex;
-margin: ;
+margin: 1px;
 `
 
 const DoneButton = styled.button`
