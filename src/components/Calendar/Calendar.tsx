@@ -5,11 +5,12 @@ import DayCell from '../DayCell/DayCell';
 import EventModal from '../EventModal/EventModal';
 
 interface CalendarProps {
-  events: { date: string; title: string }[];
+  events: { date: string; title: string; isDone: boolean }[];
   addEvent: (date: string, title: string) => void;
   removeEvent: (date: string, title: string) => void; 
-  markAsDone: (date: string, title: string) => void; 
+  markAsDone: (date: string, title: string, isDone: boolean) => void;
 }
+
 
 const Calendar: React.FC<CalendarProps> = ({ events, addEvent, markAsDone, removeEvent}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -31,9 +32,11 @@ const Calendar: React.FC<CalendarProps> = ({ events, addEvent, markAsDone, remov
 
   const handleSaveEvent = (title: string) => {
     if (selectedDate) {
-      addEvent(selectedDate, title);
+      addEvent(selectedDate, title); // Inclua isDone: false para cada evento novo
+      events.push({ date: selectedDate, title, isDone: false });
     }
   };
+  
 
   const startOfMonthDate = startOfMonth(currentDate);
   const endOfMonthDate = endOfMonth(currentDate);

@@ -8,9 +8,10 @@ interface DayCellProps {
   isCurrentMonth: boolean;
   events: { date: string; title: string; isDone: boolean }[];
   addEvent: (date: string, title: string) => void;
-  markAsDone: (date: string, title: string) => void;
+  markAsDone: (date: string, title: string, isDone: boolean) => void; // Modificado para incluir 'isDone'
   removeEvent: (date: string, title: string) => void;
 }
+
 
 const DayCell: React.FC<DayCellProps> = ({ date, day, weekday, isCurrentMonth, events, addEvent, markAsDone, removeEvent }) => {
   const todayEvents = events.filter(event => event.date === date.toISOString().split('T')[0]);
@@ -27,7 +28,7 @@ const DayCell: React.FC<DayCellProps> = ({ date, day, weekday, isCurrentMonth, e
           <Buttons>
             <DoneButton onClick={(e) => { 
                 e.stopPropagation(); 
-                markAsDone(event.date, event.title); 
+                markAsDone(event.date, event.title, true); 
             }}>✔️</DoneButton>
             <RemoveButton onClick={(e) => { 
               e.stopPropagation(); 
